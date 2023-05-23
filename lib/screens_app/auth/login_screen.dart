@@ -1,5 +1,3 @@
-
-
 import 'package:ecommerce_app_assignment/utlls_app/consts.dart';
 import 'package:flutter/material.dart';
 
@@ -40,7 +38,9 @@ class TextFieldWidget extends StatelessWidget {
   const TextFieldWidget({
     super.key,
     required this.title,
-    this.controller, this.hint, this.obstext=false,
+    this.controller,
+    this.hint,
+    this.obstext = false,
   });
 
   @override
@@ -59,6 +59,10 @@ class TextFieldWidget extends StatelessWidget {
           obscureText: obstext,
           controller: controller,
           decoration: InputDecoration(
+              suffixIcon: const Padding(
+                padding: EdgeInsets.only(right: 10),
+                child: Icon(Icons.remove_red_eye),
+              ),
               hintText: hint,
               hintStyle: const TextStyle(
                   fontSize: 14, color: secondaryLGrey, fontFamily: medium),
