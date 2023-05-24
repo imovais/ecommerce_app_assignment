@@ -1,4 +1,4 @@
-import 'package:ecommerce_app_assignment/screens_app/auth/register_screen.dart';
+import 'package:ecommerce_app_assignment/screens_app/auth/login_screen.dart';
 import 'package:ecommerce_app_assignment/utlls_app/consts.dart';
 import 'package:flutter/material.dart';
 
@@ -7,13 +7,13 @@ import '../../widgets_app/blue_button.dart';
 import '../../widgets_app/text_button.dart';
 import '../../widgets_app/text_field.dart';
 
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+class RegisterScreen extends StatelessWidget {
+  const RegisterScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBarCustomized(title: 'Sign In'),
+      appBar: appBarCustomized(title: 'Sign Up'),
       body: Padding(
         padding: EdgeInsets.symmetric(
             horizontal: MediaQuery.of(context).size.width * 0.05),
@@ -23,16 +23,16 @@ class LoginScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.008,
-              ),
+              // const SizedBox(
+              //   height: 5,
+              // ),
 
               //=======-========= Text===============
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: const [
                   Text(
-                    'Welcome back to Mega Mall',
+                    'Register Account',
                     style: TextStyle(fontSize: 25, fontFamily: bold),
                   ),
                   Text('Silahkan masukan data untuk login'),
@@ -51,9 +51,10 @@ class LoginScreen extends StatelessWidget {
                     height: 20,
                   ),
                   TextFieldWidget(
-                    title: 'Password',
-                    isSuffix: true,
-                    obstext: true,
+                    title: 'Email/Phone',
+                  ),
+                  SizedBox(
+                    height: 20,
                   ),
                 ],
               ),
@@ -63,19 +64,23 @@ class LoginScreen extends StatelessWidget {
 
               // -------------------BOTTOM TEXT BUTTON--------------
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  const Text(
+                    'Have an Account?',
+                    style: TextStyle(
+                        fontWeight: FontWeight.w600, color: primaryColor),
+                  ),
+                  const SizedBox(
+                    width: 5,
+                  ),
                   TextButtonApp(
-                      text: 'Forgot Password',
-                      textColor: primaryColor,
-                      onTab: () {}),
-                  TextButtonApp(
-                      text: 'Sign Up',
+                      text: 'Sign In',
                       textColor: secondaryBlue,
                       onTab: () => Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const RegisterScreen(),
+                            builder: (context) => const LoginScreen(),
                           ))),
                 ],
               )
@@ -85,4 +90,6 @@ class LoginScreen extends StatelessWidget {
       ),
     );
   }
+
+
 }

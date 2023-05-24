@@ -1,6 +1,8 @@
 //icons
-// const icAdd = "assets/icons/add.png";
-// const icAppLogo = "assets/icons/app_logo.png";
+const icBell = "assets/icons/bell.png";
+const icCart = "assets/icons/cart.png";
+const icSearch = "assets/icons/search.png";
+
 
 //images
 
