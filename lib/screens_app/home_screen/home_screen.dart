@@ -1,5 +1,10 @@
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+
 import 'package:ecommerce_app_assignment/utlls_app/consts.dart';
 import 'package:flutter/material.dart';
+
+import '../../widgets_app/offer_banner.dart';
+import '../../widgets_app/product_horizontal_list.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -12,63 +17,108 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: primaryBG,
         appBar: appBarHome(title: appname),
         body: Padding(
           padding: EdgeInsets.symmetric(
               horizontal: MediaQuery.of(context).size.width * 0.05),
-          child: Column(
-            children: [
-              const SizedBox(
-                height: 30,
-              ),
-              const TextField(
-                decoration: InputDecoration(
-                    fillColor: widgetBG,
-                    filled: true,
-                    enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: widgetBG),
-                        borderRadius: BorderRadius.all(Radius.circular(10))),
-                    suffixIcon: ImageIcon(AssetImage(icSearch))),
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: Container(
-                  width: 315,
-                  height: 150,
-                  color: Colors.grey.shade500,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                const SizedBox(
+                  height: 30,
                 ),
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-              Container(
-                width: double.infinity,
-                height: 150,
-                color: Colors.grey.shade200,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 5,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: Container(
-                          height: 100,
-                          width: 100,
-                          color: Colors.grey.shade300,
-                          child: const Text('hello'),
+                const TextField(
+                  decoration: InputDecoration(
+                      fillColor: widgetBG,
+                      filled: true,
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: widgetBG),
+                          borderRadius: BorderRadius.all(Radius.circular(10))),
+                      suffixIcon: ImageIcon(AssetImage(icSearch))),
+                ),
+                const SizedBox(
+                  height: 30,
+                ),
+                OfferBanner(bannerColor: Colors.green),
+                const SizedBox(
+                  height: 30,
+                ),
+
+                //================CATEGORY WIDGET====================
+                Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: const [
+                        Text(
+                          "Categories",
+                          style: TextStyle(
+                              color: primaryColor,
+                              fontFamily: medium,
+                              fontSize: 16),
                         ),
+                        Text("View All",
+                            style: TextStyle(
+                                color: secondaryBlue, fontFamily: medium)),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    SizedBox(
+                      width: double.infinity,
+                      height: 76,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: 10,
+                        itemBuilder: (context, index) {
+                          return SizedBox(
+                            width: 80,
+                            height: 76,
+                            child: Column(
+                              children: [
+                                Container(
+                                  height: 48,
+                                  width: 48,
+                                  decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                          image: AssetImage(c1)),
+                                      color: Colors.teal.withOpacity(0.5),
+                                      borderRadius: BorderRadius.circular(10)),
+                                ),
+                                Text('Gadgets')
+                              ],
+                            ),
+                          );
+                        },
                       ),
-                    );
-                  },
+                    )
+                  ],
                 ),
-              )
-            ],
+
+                //=================CATEGORY WIDGET END ========================
+
+                const ProductScroller(),
+                const SizedBox(
+                  height: 30,
+                ),
+                OfferBanner(bannerColor: secondaryBlue),
+                const SizedBox(
+                  height: 30,
+                ),
+                ProductScroller(),
+                const SizedBox(
+                  height: 30,
+                ),
+                OfferBanner(bannerColor: secondaryYellow),
+                const SizedBox(
+                  height: 30,
+                ),
+                ProductScroller(),
+                ProductScroller(),
+              ],
+            ),
           ),
         ));
   }
