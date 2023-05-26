@@ -1,5 +1,9 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:ecommerce_app_assignment/screens_app/auth/register_screen.dart';
+import 'package:ecommerce_app_assignment/screens_app/home_screen/home_screen.dart';
 import 'package:ecommerce_app_assignment/utlls_app/consts.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../../widgets_app/app_bar.dart';
@@ -7,8 +11,16 @@ import '../../widgets_app/blue_button.dart';
 import '../../widgets_app/text_button.dart';
 import '../../widgets_app/text_field.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  TextEditingController emailcontroller = TextEditingController();
+  TextEditingController passwordcontroller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -43,14 +55,16 @@ class LoginScreen extends StatelessWidget {
 
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
+                children: [
                   TextFieldWidget(
+                    mycontroller: emailcontroller,
                     title: 'Email/Phone',
                   ),
                   SizedBox(
                     height: 20,
                   ),
                   TextFieldWidget(
+                    mycontroller: passwordcontroller,
                     title: 'Password',
                     isSuffix: true,
                     obstext: true,
@@ -59,7 +73,22 @@ class LoginScreen extends StatelessWidget {
               ),
 
               // ------------------ BUTTON--------------
-              const AppButton(),
+              AppButton(
+                func: () {
+                  setState(() {});
+                  FirebaseAuth.instance
+                      .signInWithEmailAndPassword(
+                          email: emailcontroller.text.toString(),
+                          password: passwordcontroller.text.toString())
+                      .then((value) => {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => HomeScreen(),
+                                ))
+                          });
+                },
+              ),
 
               // -------------------BOTTOM TEXT BUTTON--------------
               Row(

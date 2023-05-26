@@ -9,11 +9,11 @@ class TextFieldWidget extends StatelessWidget {
   final bool obstext;
   final bool isSuffix;
   final Icon? suffixIcon;
-  final TextEditingController? controller;
+  final TextEditingController? mycontroller;
   const TextFieldWidget(
       {super.key,
       required this.title,
-      this.controller,
+      this.mycontroller,
       this.hint,
       this.obstext = false,
       this.suffixIcon,
@@ -32,10 +32,12 @@ class TextFieldWidget extends StatelessWidget {
           height: 20,
         ),
         SizedBox(
+          height: 50,
           width: double.infinity,
           child: TextField(
+            keyboardType: TextInputType.emailAddress,
             obscureText: obstext,
-            controller: controller,
+            controller: mycontroller,
             decoration: InputDecoration(
                 suffixIcon: isSuffix == true
                     ? const Padding(

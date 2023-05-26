@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+
 import 'package:flutter/material.dart';
 import '../utlls_app/consts.dart';
 
@@ -31,9 +33,9 @@ class ProductScroller extends StatelessWidget {
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const [
+            children: [
               Text(
-                "Featured Product",
+                topTitle,
                 style: TextStyle(
                     color: primaryColor, fontFamily: medium, fontSize: 16),
               ),

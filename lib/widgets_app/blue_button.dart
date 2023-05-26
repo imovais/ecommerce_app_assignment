@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 import '../utlls_app/consts.dart';
 
 class AppButton extends StatelessWidget {
+  final void Function()? func;
   const AppButton({
-    super.key,
+    super.key, required this.func,
   });
 
   @override
@@ -19,7 +20,7 @@ class AppButton extends StatelessWidget {
             style: const ButtonStyle(
                 elevation: MaterialStatePropertyAll(0),
                 backgroundColor: MaterialStatePropertyAll(secondaryBlue)),
-            onPressed: () {},
+            onPressed: func,
             child: const Text(
               'Sign In',
               style: TextStyle(fontFamily: bold),

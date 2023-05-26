@@ -1,5 +1,8 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:ecommerce_app_assignment/screens_app/auth/login_screen.dart';
 import 'package:ecommerce_app_assignment/utlls_app/consts.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../../widgets_app/app_bar.dart';
@@ -7,8 +10,17 @@ import '../../widgets_app/blue_button.dart';
 import '../../widgets_app/text_button.dart';
 import '../../widgets_app/text_field.dart';
 
-class RegisterScreen extends StatelessWidget {
+class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
+
+  @override
+  State<RegisterScreen> createState() => _RegisterScreenState();
+}
+
+class _RegisterScreenState extends State<RegisterScreen> {
+  TextEditingController emailcontroller = TextEditingController();
+
+  TextEditingController passwordcontroller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -43,15 +55,17 @@ class RegisterScreen extends StatelessWidget {
 
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
+                children: [
                   TextFieldWidget(
+                    mycontroller: emailcontroller,
                     title: 'Email/Phone',
                   ),
                   SizedBox(
                     height: 20,
                   ),
                   TextFieldWidget(
-                    title: 'Email/Phone',
+                    mycontroller: passwordcontroller,
+                    title: 'Password',
                   ),
                   SizedBox(
                     height: 20,
@@ -60,7 +74,15 @@ class RegisterScreen extends StatelessWidget {
               ),
 
               // ------------------ BUTTON--------------
-              const AppButton(),
+              AppButton(
+                func: () {
+                  setState(() {
+                    FirebaseAuth.instance.createUserWithEmailAndPassword(
+                        email: emailcontroller.text.toString(),
+                        password: passwordcontroller.text.toString());
+                  });
+                },
+              ),
 
               // -------------------BOTTOM TEXT BUTTON--------------
               Row(
@@ -90,6 +112,4 @@ class RegisterScreen extends StatelessWidget {
       ),
     );
   }
-
-
 }

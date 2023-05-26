@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 
 class OfferBanner extends StatelessWidget {
   final Color bannerColor;
+  final String? imagebanner;
   const OfferBanner({
     super.key,
     required this.bannerColor,
+    this.imagebanner,
   });
 
   @override
@@ -14,7 +16,11 @@ class OfferBanner extends StatelessWidget {
       child: Container(
         width: double.infinity,
         height: 150,
-        color: bannerColor,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+              fit: BoxFit.cover, image: AssetImage(imagebanner.toString())),
+          color: bannerColor,
+        ),
       ),
     );
   }

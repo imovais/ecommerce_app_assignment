@@ -17,19 +17,23 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: primaryBG,
-        appBar: appBarHome(title: appname),
-        body: Padding(
-          padding: EdgeInsets.symmetric(
-              horizontal: MediaQuery.of(context).size.width * 0.05),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                const SizedBox(
-                  height: 30,
-                ),
-                const TextField(
+      backgroundColor: primaryBG,
+      appBar: appBarHome(title: appname, leadingIcon: true),
+      body: Padding(
+        padding: EdgeInsets.symmetric(
+            horizontal: MediaQuery.of(context).size.width * 0.05),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              const SizedBox(
+                height: 30,
+              ),
+              SizedBox(
+                height: 50,
+                child: const TextField(
                   decoration: InputDecoration(
+                      suffixIconColor: primaryColor,
+                      hintText: 'Search Product Name',
                       fillColor: widgetBG,
                       filled: true,
                       enabledBorder: OutlineInputBorder(
@@ -37,90 +41,126 @@ class _HomeScreenState extends State<HomeScreen> {
                           borderRadius: BorderRadius.all(Radius.circular(10))),
                       suffixIcon: ImageIcon(AssetImage(icSearch))),
                 ),
-                const SizedBox(
-                  height: 30,
-                ),
-                OfferBanner(bannerColor: Colors.green),
-                const SizedBox(
-                  height: 30,
-                ),
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              OfferBanner(bannerColor: Colors.green, imagebanner: banner1),
+              const SizedBox(
+                height: 30,
+              ),
 
-                //================CATEGORY WIDGET====================
-                Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: const [
-                        Text(
-                          "Categories",
-                          style: TextStyle(
-                              color: primaryColor,
-                              fontFamily: medium,
-                              fontSize: 16),
-                        ),
-                        Text("View All",
-                            style: TextStyle(
-                                color: secondaryBlue, fontFamily: medium)),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    SizedBox(
-                      width: double.infinity,
-                      height: 76,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: 10,
-                        itemBuilder: (context, index) {
-                          return SizedBox(
-                            width: 80,
-                            height: 76,
-                            child: Column(
-                              children: [
-                                Container(
-                                  height: 48,
-                                  width: 48,
-                                  decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                          image: AssetImage(c1)),
-                                      color: Colors.teal.withOpacity(0.5),
-                                      borderRadius: BorderRadius.circular(10)),
-                                ),
-                                Text('Gadgets')
-                              ],
-                            ),
-                          );
-                        },
+              //================CATEGORY WIDGET====================
+              Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: const [
+                      Text(
+                        "Categories",
+                        style: TextStyle(
+                            color: primaryColor,
+                            fontFamily: medium,
+                            fontSize: 16),
                       ),
-                    )
-                  ],
-                ),
+                      Text("View All",
+                          style: TextStyle(
+                              color: secondaryBlue, fontFamily: medium)),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  SizedBox(
+                    width: double.infinity,
+                    height: 76,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: 10,
+                      itemBuilder: (context, index) {
+                        return SizedBox(
+                          width: 80,
+                          height: 76,
+                          child: Column(
+                            children: [
+                              Container(
+                                height: 48,
+                                width: 48,
+                                decoration: BoxDecoration(
+                                    image:
+                                        DecorationImage(image: AssetImage(c1)),
+                                    color: Colors.teal.withOpacity(0.5),
+                                    borderRadius: BorderRadius.circular(10)),
+                              ),
+                              Text('Gadgets')
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  )
+                ],
+              ),
 
-                //=================CATEGORY WIDGET END ========================
+              //=================CATEGORY WIDGET END ========================
 
-                const ProductScroller(),
-                const SizedBox(
-                  height: 30,
-                ),
-                OfferBanner(bannerColor: secondaryBlue),
-                const SizedBox(
-                  height: 30,
-                ),
-                ProductScroller(),
-                const SizedBox(
-                  height: 30,
-                ),
-                OfferBanner(bannerColor: secondaryYellow),
-                const SizedBox(
-                  height: 30,
-                ),
-                ProductScroller(),
-                ProductScroller(),
-              ],
-            ),
+              const ProductScroller(),
+              const SizedBox(
+                height: 30,
+              ),
+              OfferBanner(bannerColor: secondaryBlue),
+              const SizedBox(
+                height: 30,
+              ),
+              ProductScroller(topTitle: 'Best Sellers'),
+              const SizedBox(
+                height: 30,
+              ),
+              OfferBanner(bannerColor: secondaryYellow),
+              const SizedBox(
+                height: 30,
+              ),
+              ProductScroller(
+                topTitle: 'New Arrivals',
+              ),
+              ProductScroller(
+                topTitle: 'Top Rated Products',
+              ),
+              ProductScroller(
+                topTitle: 'Special Offers',
+              ),
+            ],
           ),
-        ));
+        ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        selectedIconTheme: IconThemeData(color: secondaryBlue),
+        unselectedIconTheme: IconThemeData(color: primaryColor),
+        backgroundColor: primaryBG,
+        showUnselectedLabels: true,
+        currentIndex: 0,
+        //fixedColor: Colors.red,
+        items: [
+          BottomNavigationBarItem(
+            icon: Image.asset(home),
+            label: 'HOME',
+          ),
+          BottomNavigationBarItem(
+            icon: Image.asset(wishlist),
+            label: 'WISHLIST',
+          ),
+          BottomNavigationBarItem(
+            icon: Image.asset(bag),
+            label: 'BAG',
+          ),
+          BottomNavigationBarItem(
+            icon: Image.asset(profile),
+            label: 'PROFILE',
+          ),
+        ],
+      ),
+    );
   }
 }
 
@@ -134,7 +174,7 @@ AppBar appBarHome({required String title, bool leadingIcon = true}) {
           children: [
             Image.asset(icBell),
             const SizedBox(
-              width: 10,
+              width: 15,
             ),
             Image.asset(icCart)
           ],
