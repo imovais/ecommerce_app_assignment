@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:ecommerce_app_assignment/screens_app/home_screen/add_product_form.dart';
 import 'package:ecommerce_app_assignment/utlls_app/consts.dart';
+import 'package:ecommerce_app_assignment/widgets_app/product_horizontal_list_new.dart';
 import 'package:flutter/material.dart';
 
 import '../../widgets_app/offer_banner.dart';
@@ -18,7 +20,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: primaryBG,
-      appBar: appBarHome(title: appname, leadingIcon: true),
+      appBar: appBarHome(title: appname, leadingIcon: true, context),
       body: Padding(
         padding: EdgeInsets.symmetric(
             horizontal: MediaQuery.of(context).size.width * 0.05),
@@ -104,7 +106,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
               //=================CATEGORY WIDGET END ========================
 
-              const ProductScroller(),
+              const ProductScrollerNew(listcat: 'feature'),
               const SizedBox(
                 height: 30,
               ),
@@ -112,7 +114,10 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(
                 height: 30,
               ),
-              ProductScroller(topTitle: 'Best Sellers'),
+              ProductScrollerNew(
+                topTitle: 'Best Sellers',
+                listcat: 'bestseller',
+              ),
               const SizedBox(
                 height: 30,
               ),
@@ -164,8 +169,17 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-AppBar appBarHome({required String title, bool leadingIcon = true}) {
+AppBar appBarHome(context, {required String title, bool leadingIcon = true}) {
   return AppBar(
+    leading: GestureDetector(
+        onTap: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => AddProductForm(),
+              ));
+        },
+        child: Icon(Icons.add)),
     actions: [
       Padding(
         padding: const EdgeInsets.only(right: 15),

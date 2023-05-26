@@ -1,4 +1,4 @@
-import 'package:ecommerce_app_assignment/screens_app/auth/login_screen.dart';
+import 'package:ecommerce_app_assignment/screens_app/home_screen/home_screen.dart';
 import 'package:ecommerce_app_assignment/utlls_app/consts.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +20,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(fontFamily: regular, primaryColor: primaryColor),
-        home: const LoginScreen());
+        home: const HomeScreen());
   }
 }
