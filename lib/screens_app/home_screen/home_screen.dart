@@ -6,7 +6,6 @@ import 'package:ecommerce_app_assignment/widgets_app/product_horizontal_list_new
 import 'package:flutter/material.dart';
 
 import '../../widgets_app/offer_banner.dart';
-import '../../widgets_app/product_horizontal_list.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -28,14 +27,15 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             children: [
               const SizedBox(
-                height: 30,
+                height: 20,
               ),
               SizedBox(
-                height: 50,
+                height: 40,
                 child: const TextField(
                   decoration: InputDecoration(
                       suffixIconColor: primaryColor,
                       hintText: 'Search Product Name',
+                      contentPadding: EdgeInsets.only(top: 10, left: 20),
                       fillColor: widgetBG,
                       filled: true,
                       enabledBorder: OutlineInputBorder(
@@ -130,15 +130,17 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(
                 height: 30,
               ),
-              ProductScroller(
+              ProductScrollerNew(
+                cat: 'Category.New Arrival',
                 topTitle: 'New Arrivals',
               ),
-              ProductScroller(
+              ProductScrollerNew(
+                cat: 'Category.Top Rated Product',
                 topTitle: 'Top Rated Products',
               ),
-              ProductScroller(
-                topTitle: 'Special Offers',
-              ),
+              // ProductScroller(
+              //   topTitle: 'Special Offers',
+              // ),
             ],
           ),
         ),
@@ -176,15 +178,17 @@ class _HomeScreenState extends State<HomeScreen> {
 
 AppBar appBarHome(context, {required String title, bool leadingIcon = true}) {
   return AppBar(
-    leading: GestureDetector(
-        onTap: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => AddProductForm(),
-              ));
-        },
-        child: Icon(Icons.add)),
+    leading: leadingIcon == true
+        ? GestureDetector(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AddProductForm(),
+                  ));
+            },
+            child: Icon(Icons.add))
+        : null,
     actions: [
       Padding(
         padding: const EdgeInsets.only(right: 15),

@@ -1,13 +1,11 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_print
 import 'dart:io';
-
 import 'package:ecommerce_app_assignment/functions/crud.dart';
 import 'package:ecommerce_app_assignment/screens_app/home_screen/home_screen.dart';
 import 'package:ecommerce_app_assignment/widgets_app/text_field.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import '../../functions/image_FilePicker.dart';
 
 class AddProductForm extends StatefulWidget {
   const AddProductForm({super.key});

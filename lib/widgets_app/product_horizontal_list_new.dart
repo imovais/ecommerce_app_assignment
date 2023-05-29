@@ -139,7 +139,7 @@ class _TileAppState extends State<TileApp> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => ProductDetail(
-                            data: widget.dataforscreen,
+                          data: widget.dataforscreen,
                           )));
             },
             child: Container(
@@ -157,6 +157,7 @@ class _TileAppState extends State<TileApp> {
                       width: 125,
                       decoration: BoxDecoration(
                           image: DecorationImage(
+                              fit: BoxFit.cover,
                               image: NetworkImage(widget.myimage))),
                       //child: Image.asset(p1),
                     ),
@@ -165,9 +166,12 @@ class _TileAppState extends State<TileApp> {
                       children: [
                         Text(
                           widget.name,
-                          style: TextStyle(fontSize: 14, color: primaryColor),
+                          style: TextStyle(
+                              fontSize: 12,
+                              color: primaryColor,
+                              fontWeight: FontWeight.bold),
                         ),
-                        Text(widget.price,
+                        Text('Rs. ${widget.price}.00',
                             style: TextStyle(
                                 fontSize: 12,
                                 color: Colors.red,
@@ -181,7 +185,7 @@ class _TileAppState extends State<TileApp> {
                           children: [
                             Icon(size: 18, color: secondaryYellow, Icons.star),
                             Text(
-                              widget.rating,
+                              widget.rating.isEmpty ? "5.0" : widget.rating,
                               style: TextStyle(
                                   fontSize: 10,
                                   fontFamily: bold,
