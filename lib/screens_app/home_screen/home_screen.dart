@@ -9,7 +9,7 @@ import '../../widgets_app/offer_banner.dart';
 import '../../widgets_app/product_horizontal_list.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen( {super.key});
+  const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -106,8 +106,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
               //=================CATEGORY WIDGET END ========================
 
-              const ProductScrollerNew(
-                  topTitle: 'Feature Products', listcat: 'feature'),
+              ProductScrollerNew(
+                cat: 'Category.Feature',
+                topTitle: 'Feature Products',
+                // listcat: 'feature'
+              ),
               const SizedBox(
                 height: 30,
               ),
@@ -115,9 +118,10 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(
                 height: 30,
               ),
-              const ProductScrollerNew(
+              ProductScrollerNew(
+                cat: 'Category.Best Seller',
                 topTitle: 'Best Sellers',
-                listcat: 'bestseller',
+                // listcat: 'bestseller',
               ),
               const SizedBox(
                 height: 30,

@@ -12,7 +12,7 @@ class ProductScrollerNew extends StatefulWidget {
   final String pName;
   final String pPrice;
   final String pReview;
-  final String listcat;
+  final String cat;
 
   const ProductScrollerNew(
       {super.key,
@@ -22,7 +22,7 @@ class ProductScrollerNew extends StatefulWidget {
       this.pName = 'TMA-2 HD Wireless',
       this.pPrice = 'Rp. 1.500.000',
       this.pReview = '86',
-      required this.listcat});
+      required this.cat});
 
   @override
   State<ProductScrollerNew> createState() => _ProductScrollerNewState();
@@ -30,30 +30,34 @@ class ProductScrollerNew extends StatefulWidget {
 
 class _ProductScrollerNewState extends State<ProductScrollerNew> {
   //  CollectionReference allproducts =
-  getallproducts({required String listcategory}) async {
+  getallproducts() async {
     return FirebaseFirestore.instance
         .collection('allproducts')
-        .where('listcategory', isEqualTo: listcategory.toString())
+        .where(
+          widget.cat,
+          isEqualTo: true,
+        )
         .get();
   }
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: [          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                widget.topTitle,
-                style: TextStyle(
-                    color: primaryColor, fontFamily: medium, fontSize: 16),
-              ),
-              Text("View All",
-                  style: TextStyle(color: secondaryBlue, fontFamily: medium)),
-            ],
-          ),
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              widget.topTitle,
+              style: TextStyle(
+                  color: primaryColor, fontFamily: medium, fontSize: 16),
+            ),
+            Text("View All",
+                style: TextStyle(color: secondaryBlue, fontFamily: medium)),
+          ],
+        ),
         FutureBuilder(
-            future: getallproducts(listcategory: widget.listcat),
+            future: getallproducts(),
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               if (snapshot.hasData) {
                 return Container(
@@ -72,13 +76,16 @@ class _ProductScrollerNewState extends State<ProductScrollerNew> {
                                 snapshot.data.docs[index].id.toString());
                           });
                         },
-                        price: snapshot.data.docs[index]['productPrice'].toString(),
-                        name: snapshot.data.docs[index]['productName'].toString(),
-                        myimage: snapshot.data.docs[index]['imageUrl'].toString(),
-                        rating:
-                            snapshot.data.docs[index]['ProductRating'].toString(),
-                        review:
-                            snapshot.data.docs[index]['ProductReviews'].toString(),
+                        price: snapshot.data.docs[index]['productPrice']
+                            .toString(),
+                        name:
+                            snapshot.data.docs[index]['productName'].toString(),
+                        myimage:
+                            snapshot.data.docs[index]['imageUrl'].toString(),
+                        rating: snapshot.data.docs[index]['ProductRating']
+                            .toString(),
+                        review: snapshot.data.docs[index]['ProductReviews']
+                            .toString(),
                       );
                     },
                   ),

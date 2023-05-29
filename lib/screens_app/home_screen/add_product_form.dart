@@ -1,9 +1,12 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-import 'package:cloud_firestore/cloud_firestore.dart';
+
+import 'package:ecommerce_app_assignment/functions/crud.dart';
 import 'package:ecommerce_app_assignment/screens_app/home_screen/home_screen.dart';
 import 'package:ecommerce_app_assignment/widgets_app/text_field.dart';
 import 'package:flutter/material.dart';
+
+import '../../functions/image_filepicker.dart';
 
 class AddProductForm extends StatefulWidget {
   const AddProductForm({super.key});
@@ -23,27 +26,12 @@ class _AddProductFormState extends State<AddProductForm> {
 
   TextEditingController image = TextEditingController();
 
-  TextEditingController listcategory = TextEditingController();
-
-  Future<void> addProductOnDatabase(
-      String productName,
-      String productPrice,
-      String productreviews,
-      String productrating,
-      String imageUrl,
-      String listcategory) async {
-    await FirebaseFirestore.instance.collection("allproducts").add({
-      'productName': productName,
-      'productPrice': productPrice,
-      'ProductReviews': 'Review$productreviews',
-      'ProductRating': productrating,
-      'imageUrl': 'assets/images/$imageUrl.png',
-      'listcategory': listcategory,
-    });
-  }
-
   bool feature = false;
-  bool bestSeller = false;
+  bool bestseller = false;
+  bool newarrival = false;
+  bool topratedproduct = false;
+
+  String? imagestore;
   // bool newArrival = false;
   // bool topRated = false;
   // bool specialOffers = false;
@@ -76,10 +64,14 @@ class _AddProductFormState extends State<AddProductForm> {
                   title: 'Image',
                   mycontroller: image,
                 ),
-                TextFieldWidget(
-                  title: 'ListGategory',
-                  mycontroller: listcategory,
-                ),
+
+                ElevatedButton(
+                    onPressed: () => openFilePicker(imagestore!),
+                    child: Text('Pick Image')),
+                // TextFieldWidget(
+                //   title: 'ListGategory',
+                //   mycontroller: listcategory,
+                // ),
                 SizedBox(
                   height: 20,
                 ),
@@ -96,10 +88,29 @@ class _AddProductFormState extends State<AddProductForm> {
                 ),
                 CheckboxListTile(
                   title: Text('Best Seller'),
-                  value: bestSeller,
+                  value: bestseller,
                   onChanged: (value) {
                     setState(() {
-                      bestSeller = value!;
+                      bestseller = value!;
+                    });
+                  },
+                ),
+
+                CheckboxListTile(
+                  title: Text('New Arrival'),
+                  value: newarrival,
+                  onChanged: (value) {
+                    setState(() {
+                      feature = value!;
+                    });
+                  },
+                ),
+                CheckboxListTile(
+                  title: Text('Top Rated Products'),
+                  value: topratedproduct,
+                  onChanged: (value) {
+                    setState(() {
+                      bestseller = value!;
                     });
                   },
                 ),
@@ -118,13 +129,14 @@ class _AddProductFormState extends State<AddProductForm> {
                         child: Text('Cancel')),
                     ElevatedButton(
                         onPressed: () {
-                          addProductOnDatabase(
+                          Product.addProductOnDatabase(
                                   pname.text.toString(),
                                   price.text.toString(),
                                   reviews.text.toString(),
                                   rating.text.toString(),
-                                  image.text.toString(),
-                                  listcategory.text.toString())
+                                  imagestore.toString(),
+                                  feature,
+                                  bestseller)
                               .whenComplete(() {
                             Navigator.push(
                                 context,
