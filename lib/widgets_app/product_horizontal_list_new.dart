@@ -1,10 +1,11 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ecommerce_app_assignment/functions/crud.dart';
 import 'package:flutter/material.dart';
 import '../utlls_app/consts.dart';
 
-class ProductScrollerNew extends StatelessWidget {
+class ProductScrollerNew extends StatefulWidget {
   final String topTitle;
   final String topLinkText;
   final String image;
@@ -23,57 +24,81 @@ class ProductScrollerNew extends StatelessWidget {
       this.pReview = '86',
       required this.listcat});
 
+  @override
+  State<ProductScrollerNew> createState() => _ProductScrollerNewState();
+}
+
+class _ProductScrollerNewState extends State<ProductScrollerNew> {
   //  CollectionReference allproducts =
-  //     FirebaseFirestore.instance.collection('allproducts');
-
- 
-
   getallproducts({required String listcategory}) async {
-    return 
-        FirebaseFirestore.instance.collection('allproducts').where('listcategory', isEqualTo: listcategory.toString())
+    return FirebaseFirestore.instance
+        .collection('allproducts')
+        .where('listcategory', isEqualTo: listcategory.toString())
         .get();
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: getallproducts(listcategory: listcat),
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (snapshot.hasData) {
-            return Container(
-              width: double.infinity,
-              height: 240,
-              color: primaryBG,
-              child: ListView.builder(
-                physics: const BouncingScrollPhysics(),
-                scrollDirection: Axis.horizontal,
-                itemCount: snapshot.data.docs.length,
-                itemBuilder: (context, index) {
-                  return TileApp(
-                    price: snapshot.data.docs[index]['productPrice'].toString(),
-                    name: snapshot.data.docs[index]['productName'].toString(),
-                    myimage: snapshot.data.docs[index]['imageUrl'].toString(),
-                    rating:
-                        snapshot.data.docs[index]['ProductRating'].toString(),
-                    review:
-                        snapshot.data.docs[index]['ProductReviews'].toString(),
-                  );
-                },
+    return Column(
+      children: [          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                widget.topTitle,
+                style: TextStyle(
+                    color: primaryColor, fontFamily: medium, fontSize: 16),
               ),
-            );
-          } else {
-            return CircularProgressIndicator();
-          }
-        });
+              Text("View All",
+                  style: TextStyle(color: secondaryBlue, fontFamily: medium)),
+            ],
+          ),
+        FutureBuilder(
+            future: getallproducts(listcategory: widget.listcat),
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              if (snapshot.hasData) {
+                return Container(
+                  width: double.infinity,
+                  height: 240,
+                  color: primaryBG,
+                  child: ListView.builder(
+                    physics: const BouncingScrollPhysics(),
+                    scrollDirection: Axis.horizontal,
+                    itemCount: snapshot.data.docs.length,
+                    itemBuilder: (context, index) {
+                      return TileApp(
+                        onTTap: () {
+                          setState(() {
+                            Product.deletProductOnDatabase(
+                                snapshot.data.docs[index].id.toString());
+                          });
+                        },
+                        price: snapshot.data.docs[index]['productPrice'].toString(),
+                        name: snapshot.data.docs[index]['productName'].toString(),
+                        myimage: snapshot.data.docs[index]['imageUrl'].toString(),
+                        rating:
+                            snapshot.data.docs[index]['ProductRating'].toString(),
+                        review:
+                            snapshot.data.docs[index]['ProductReviews'].toString(),
+                      );
+                    },
+                  ),
+                );
+              } else {
+                return CircularProgressIndicator();
+              }
+            }),
+      ],
+    );
   }
 }
 
-class TileApp extends StatelessWidget {
+class TileApp extends StatefulWidget {
   final String name;
   final String myimage;
   final String price;
   final String rating;
   final String review;
+  final void Function()? onTTap;
 
   const TileApp(
       {super.key,
@@ -81,8 +106,14 @@ class TileApp extends StatelessWidget {
       required this.myimage,
       required this.price,
       required this.rating,
-      required this.review});
+      required this.review,
+      required this.onTTap});
 
+  @override
+  State<TileApp> createState() => _TileAppState();
+}
+
+class _TileAppState extends State<TileApp> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -105,17 +136,18 @@ class TileApp extends StatelessWidget {
                     height: 125,
                     width: 125,
                     decoration: BoxDecoration(
-                        image: DecorationImage(image: AssetImage(myimage))),
+                        image:
+                            DecorationImage(image: AssetImage(widget.myimage))),
                     //child: Image.asset(p1),
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        name,
+                        widget.name,
                         style: TextStyle(fontSize: 14, color: primaryColor),
                       ),
-                      Text(price,
+                      Text(widget.price,
                           style: TextStyle(
                               fontSize: 12,
                               color: Colors.red,
@@ -129,7 +161,7 @@ class TileApp extends StatelessWidget {
                         children: [
                           Icon(size: 18, color: secondaryYellow, Icons.star),
                           Text(
-                            rating,
+                            widget.rating,
                             style: TextStyle(
                                 fontSize: 10,
                                 fontFamily: bold,
@@ -137,12 +169,13 @@ class TileApp extends StatelessWidget {
                           ),
                         ],
                       ),
-                      Text(review,
+                      Text(widget.review,
                           style: TextStyle(
                               fontSize: 10,
                               fontFamily: bold,
                               color: primaryColor)),
-                      const Icon(Icons.more_vert)
+                      GestureDetector(
+                          onTap: widget.onTTap, child: const Icon(Icons.delete))
                     ],
                   )
                 ],

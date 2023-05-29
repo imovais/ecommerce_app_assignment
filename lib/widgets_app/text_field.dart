@@ -35,10 +35,12 @@ class TextFieldWidget extends StatelessWidget {
           height: 50,
           width: double.infinity,
           child: TextField(
+            
             keyboardType: TextInputType.emailAddress,
             obscureText: obstext,
             controller: mycontroller,
             decoration: InputDecoration(
+              
                 suffixIcon: isSuffix == true
                     ? const Padding(
                         padding: EdgeInsets.only(right: 10),
