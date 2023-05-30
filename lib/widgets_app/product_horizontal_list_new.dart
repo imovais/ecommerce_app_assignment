@@ -2,6 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce_app_assignment/functions/crud.dart';
+import 'package:ecommerce_app_assignment/product_Detail_Screen/product_detail.dart';
 import 'package:flutter/material.dart';
 import '../utlls_app/consts.dart';
 
@@ -70,6 +71,7 @@ class _ProductScrollerNewState extends State<ProductScrollerNew> {
                     itemCount: snapshot.data.docs.length,
                     itemBuilder: (context, index) {
                       return TileApp(
+                        dataforscreen: snapshot.data.docs[index],
                         onTTap: () {
                           setState(() {
                             Product.deletProductOnDatabase(
@@ -105,6 +107,7 @@ class TileApp extends StatefulWidget {
   final String price;
   final String rating;
   final String review;
+  final DocumentSnapshot dataforscreen;
   final void Function()? onTTap;
 
   const TileApp(
@@ -114,7 +117,8 @@ class TileApp extends StatefulWidget {
       required this.price,
       required this.rating,
       required this.review,
-      required this.onTTap});
+      required this.onTTap,
+      required this.dataforscreen});
 
   @override
   State<TileApp> createState() => _TileAppState();
@@ -129,64 +133,75 @@ class _TileAppState extends State<TileApp> {
         borderRadius: BorderRadius.circular(10),
         child: Card(
           elevation: 3,
-          child: Container(
-              padding: const EdgeInsets.all(8.0),
-              //height: 240,
-              width: 148,
-              color: widgetBG,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  //====================IMAGES
-                  Container(
-                    height: 125,
-                    width: 125,
-                    decoration: BoxDecoration(
-                        image:
-                            DecorationImage(image: AssetImage(widget.myimage))),
-                    //child: Image.asset(p1),
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        widget.name,
-                        style: TextStyle(fontSize: 14, color: primaryColor),
-                      ),
-                      Text(widget.price,
-                          style: TextStyle(
-                              fontSize: 12,
-                              color: Colors.red,
-                              fontFamily: bold)),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          Icon(size: 18, color: secondaryYellow, Icons.star),
-                          Text(
-                            widget.rating,
+          child: GestureDetector(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ProductDetail(
+                            data: widget.dataforscreen,
+                          )));
+            },
+            child: Container(
+                padding: const EdgeInsets.all(8.0),
+                //height: 240,
+                width: 148,
+                color: widgetBG,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    //====================IMAGES
+                    Container(
+                      height: 125,
+                      width: 125,
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                              image: NetworkImage(widget.myimage))),
+                      //child: Image.asset(p1),
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          widget.name,
+                          style: TextStyle(fontSize: 14, color: primaryColor),
+                        ),
+                        Text(widget.price,
+                            style: TextStyle(
+                                fontSize: 12,
+                                color: Colors.red,
+                                fontFamily: bold)),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Icon(size: 18, color: secondaryYellow, Icons.star),
+                            Text(
+                              widget.rating,
+                              style: TextStyle(
+                                  fontSize: 10,
+                                  fontFamily: bold,
+                                  color: primaryColor),
+                            ),
+                          ],
+                        ),
+                        Text(widget.review,
                             style: TextStyle(
                                 fontSize: 10,
                                 fontFamily: bold,
-                                color: primaryColor),
-                          ),
-                        ],
-                      ),
-                      Text(widget.review,
-                          style: TextStyle(
-                              fontSize: 10,
-                              fontFamily: bold,
-                              color: primaryColor)),
-                      GestureDetector(
-                          onTap: widget.onTTap, child: const Icon(Icons.delete))
-                    ],
-                  )
-                ],
-              )),
+                                color: primaryColor)),
+                        GestureDetector(
+                            onTap: widget.onTTap,
+                            child: const Icon(Icons.delete))
+                      ],
+                    )
+                  ],
+                )),
+          ),
         ),
       ),
     );

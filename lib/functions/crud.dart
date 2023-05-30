@@ -14,14 +14,21 @@ class Product {
       String productrating,
       String imageUrl,
       bool feature,
-      bool bestseller) async {
+      bool bestseller,
+      bool newarrival,
+      bool topratedproduct) async {
     await FirebaseFirestore.instance.collection("allproducts").add({
       'productName': productName,
       'productPrice': productPrice,
       'ProductReviews': 'Review$productreviews',
       'ProductRating': productrating,
-      'imageUrl': 'assets/images/$imageUrl.png',
-      'Category': {'Feature': false, 'Best Seller': false},
+      'imageUrl': imageUrl,
+      'Category': {
+        'Feature': feature,
+        'Best Seller': bestseller,
+        'New Arrival': newarrival,
+        'topratedproduct': topratedproduct
+      },
     });
   }
 

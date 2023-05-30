@@ -1,12 +1,13 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_print
+import 'dart:io';
 
 import 'package:ecommerce_app_assignment/functions/crud.dart';
 import 'package:ecommerce_app_assignment/screens_app/home_screen/home_screen.dart';
 import 'package:ecommerce_app_assignment/widgets_app/text_field.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-
-import '../../functions/image_filepicker.dart';
+import '../../functions/image_FilePicker.dart';
 
 class AddProductForm extends StatefulWidget {
   const AddProductForm({super.key});
@@ -32,9 +33,36 @@ class _AddProductFormState extends State<AddProductForm> {
   bool topratedproduct = false;
 
   String? imagestore;
+
   // bool newArrival = false;
   // bool topRated = false;
   // bool specialOffers = false;
+
+  void openfilepickernew() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles();
+
+    if (result != null) {
+      PlatformFile file = result.files.first;
+
+      print('Here is Your File Path: ${file.path}');
+
+      if (file.path != null) {
+        Reference storageReference =
+            FirebaseStorage.instance.ref().child('files/${file.name}');
+        UploadTask uploadTask = storageReference.putFile(File(file.path!));
+        TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
+
+        String fileUrl = await taskSnapshot.ref.getDownloadURL();
+        print('THIS IS FIRESTORE PATH: $fileUrl');
+
+        imagestore = fileUrl;
+        // Perform actions with the file
+        // ...
+      }
+    } else {
+      print('THERE IS AN ERROR');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,8 +93,12 @@ class _AddProductFormState extends State<AddProductForm> {
                   mycontroller: image,
                 ),
 
+                Text(imagestore == null ? 'Null' : imagestore.toString()),
+
                 ElevatedButton(
-                    onPressed: () => openFilePicker(imagestore!),
+                    onPressed: () {
+                      openfilepickernew();
+                    },
                     child: Text('Pick Image')),
                 // TextFieldWidget(
                 //   title: 'ListGategory',
@@ -101,7 +133,7 @@ class _AddProductFormState extends State<AddProductForm> {
                   value: newarrival,
                   onChanged: (value) {
                     setState(() {
-                      feature = value!;
+                      newarrival = value!;
                     });
                   },
                 ),
@@ -110,7 +142,7 @@ class _AddProductFormState extends State<AddProductForm> {
                   value: topratedproduct,
                   onChanged: (value) {
                     setState(() {
-                      bestseller = value!;
+                      topratedproduct = value!;
                     });
                   },
                 ),
@@ -136,7 +168,9 @@ class _AddProductFormState extends State<AddProductForm> {
                                   rating.text.toString(),
                                   imagestore.toString(),
                                   feature,
-                                  bestseller)
+                                  bestseller,
+                                  newarrival,
+                                  topratedproduct)
                               .whenComplete(() {
                             Navigator.push(
                                 context,
