@@ -1,8 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ecommerce_app_assignment/screens_app/home_screen/home_screen.dart';
 import 'package:ecommerce_app_assignment/utlls_app/consts.dart';
-import 'package:ecommerce_app_assignment/widgets_app/app_bar.dart';
-import 'package:ecommerce_app_assignment/widgets_app/blue_button.dart';
 import 'package:flutter/material.dart';
 
 class ProductDetail extends StatefulWidget {
@@ -76,8 +73,8 @@ class _ProductDetailState extends State<ProductDetail> {
                 Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Row(
-                        children: [
+                      Row(
+                        children: const [
                           Icon(
                             Icons.star,
                             color: secondaryYellow,
@@ -103,21 +100,23 @@ class _ProductDetailState extends State<ProductDetail> {
                   color: Colors.grey.shade400,
                   thickness: 0.5,
                 ),
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Row(
                       children: [
-                        CircleAvatar(
-                          backgroundColor: Colors.green,
+                        const CircleAvatar(
+                          backgroundImage: AssetImage(pp),
+                              
+                          //backgroundColor: Colors.green,
                           radius: 30,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 20,
                         ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
+                          children: const [
                             Text(
                               'MUHAMMAD OVAIS KHAN',
                               style: TextStyle(
@@ -136,7 +135,7 @@ class _ProductDetailState extends State<ProductDetail> {
                         ),
                       ],
                     ),
-                    Icon(Icons.arrow_forward_ios_sharp)
+                    const Icon(Icons.arrow_forward_ios_sharp)
                   ],
                 ),
                 Divider(
@@ -165,14 +164,93 @@ class _ProductDetailState extends State<ProductDetail> {
                 const SizedBox(
                   height: 20,
                 ),
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                      onPressed: () {}, child: const Text('Add to Cart')),
-                ),
               ],
             ),
           ),
+        ),
+        bottomNavigationBar: Row(
+          children: [
+            Material(
+              color: secondaryYellow,
+              child: InkWell(
+                onTap: () {
+                  //print('called on tap');
+                },
+                child: const SizedBox(
+                  height: kToolbarHeight,
+                  width: 100,
+                  child: Center(
+                      child: Icon(
+                    Icons.favorite_rounded,
+                    shadows: [
+                      Shadow(
+                          offset: Offset(2, 2),
+                          blurRadius: 4,
+                          color: Colors.black)
+                    ],
+                    size: 30,
+                    color: Color.fromARGB(255, 245, 16, 0),
+                  )
+                      // Text(
+                      //   'Click',
+                      //   textAlign: TextAlign.center,
+                      //   style: TextStyle(
+                      //     fontWeight: FontWeight.bold,
+                      //   ),
+                      // ),
+                      ),
+                ),
+              ),
+            ),
+            Expanded(
+              child: Material(
+                color: secondaryBlue,
+                child: InkWell(
+                  onTap: () {
+                    //print('called on tap');
+                  },
+                  child: SizedBox(
+                    height: kToolbarHeight,
+                    width: double.infinity,
+                    child: Center(
+                        child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Icon(
+                          Icons.shopping_cart,
+                          shadows: [
+                            Shadow(
+                                offset: Offset(2, 2),
+                                blurRadius: 4,
+                                color: Colors.black)
+                          ],
+                          size: 30,
+                          color: Color.fromARGB(255, 255, 255, 255),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          'Add to Cart',
+                          style: TextStyle(
+                              fontFamily: regular,
+                              fontSize: 20,
+                              color: Color.fromARGB(255, 230, 230, 230)),
+                        )
+                      ],
+                    )
+                        // Text(
+                        //   'Bottom Button',
+                        //   style: TextStyle(
+                        //     fontWeight: FontWeight.bold,
+                        //   ),
+                        // ),
+                        ),
+                  ),
+                ),
+              ),
+            ),
+          ],
         ));
   }
 }

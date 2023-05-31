@@ -13,5 +13,6 @@ const wishlist = "assets/icons/wishlist.png";
 const p1 = "assets/images/p1.png";
 const p2 = "assets/images/p2.png";
 const banner1 = "assets/images/banner1.png";
+const pp = "assets/images/profile.jpg";
 // const imgB2 = "assets/images/b2.jpeg";
 // const imgB3 = "assets/images/b3.jpeg";

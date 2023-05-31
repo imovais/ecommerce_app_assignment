@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:ecommerce_app_assignment/CART/cart.dart';
 import 'package:ecommerce_app_assignment/screens_app/home_screen/add_product_form.dart';
 import 'package:ecommerce_app_assignment/utlls_app/consts.dart';
 import 'package:ecommerce_app_assignment/widgets_app/product_horizontal_list_new.dart';
@@ -199,7 +200,18 @@ AppBar appBarHome(context, {required String title, bool leadingIcon = true}) {
             const SizedBox(
               width: 15,
             ),
-            Image.asset(icCart)
+            GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => CartScreen(),
+                      ));
+                },
+                child: Image.asset(
+                  icCart,
+                  height: 30,
+                ))
           ],
         ),
       )
