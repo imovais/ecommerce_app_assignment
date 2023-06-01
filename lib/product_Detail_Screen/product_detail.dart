@@ -1,6 +1,8 @@
 // ignore_for_file: sized_box_for_whitespace, prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ecommerce_app_assignment/CART/MODEL/cart_model.dart';
+import 'package:ecommerce_app_assignment/CART/cart.dart';
 import 'package:ecommerce_app_assignment/utlls_app/consts.dart';
 import 'package:flutter/material.dart';
 
@@ -30,7 +32,15 @@ class _ProductDetailState extends State<ProductDetail> {
                   const SizedBox(
                     width: 15,
                   ),
-                  Image.asset(icCart)
+                  GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => CartScreen(),
+                            ));
+                      },
+                      child: Image.asset(icCart))
                 ],
               ),
             )
@@ -76,7 +86,7 @@ class _ProductDetailState extends State<ProductDetail> {
                 Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                       Row(
+                      Row(
                         children: [
                           Icon(
                             Icons.star,
@@ -103,7 +113,7 @@ class _ProductDetailState extends State<ProductDetail> {
                   color: Colors.grey.shade400,
                   thickness: 0.5,
                 ),
-                 Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Row(
@@ -180,7 +190,11 @@ class _ProductDetailState extends State<ProductDetail> {
                   color: primaryColor,
                   child: InkWell(
                     onTap: () {
-                      //print('called on tap');
+                      CartData.cartdatalist.add({
+                        'productname': widget.data['productName'],
+                        'productprice': widget.data['productPrice'],
+                        'productimage': widget.data['imageUrl']
+                      });
                     },
                     child: SizedBox(
                       height: kToolbarHeight,

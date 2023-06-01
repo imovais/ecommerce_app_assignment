@@ -1,18 +1,37 @@
+// ignore_for_file: avoid_print
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ecommerce_app_assignment/CART/MODEL/cart_model.dart';
 import 'package:ecommerce_app_assignment/utlls_app/consts.dart';
 import 'package:flutter/material.dart';
 
 class CartScreen extends StatefulWidget {
-  const CartScreen({super.key});
+  const CartScreen({
+    super.key,
+  });
+
+  // final DocumentSnapshot? fromPDetaildata;
 
   @override
   State<CartScreen> createState() => _CartScreenState();
 }
 
 class _CartScreenState extends State<CartScreen> {
+  // void calculate(int amount) {
+  //   totalamount2 + amount;
+  // }
+  List tt = [];
+  checking(int amount, i) {
+    tt.add([i, amount]);
+    for (int hh in tt[1]) {
+      totalamount2 = totalamount2 + hh;
+    }
+  }
+
   int totalamount2 = 0;
   @override
   Widget build(BuildContext context) {
-    print('toal amount is $totalamount2');
+    print('toal amount is $tt');
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,
@@ -24,6 +43,7 @@ class _CartScreenState extends State<CartScreen> {
       body: Padding(
         padding: const EdgeInsets.only(bottom: 20, right: 20, left: 20),
         child: Column(
+          mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
@@ -37,7 +57,11 @@ class _CartScreenState extends State<CartScreen> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
                   child: TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        setState(() {});
+                        totalamount2 = 0;
+                        CartData.cartdatalist.clear();
+                      },
                       child: const Text(' Remove All',
                           style: TextStyle(
                               fontSize: 14,
@@ -49,20 +73,41 @@ class _CartScreenState extends State<CartScreen> {
             const SizedBox(
               height: 20,
             ),
-            CartListWidget(
-              onpressget: (totalamount) {
-                totalamount2 = totalamount2 + totalamount;
-                setState(() {});
-                print('checking on click');
-              },
-            ),
-            CartListWidget(
-              onpressget: (totalamount) {
-                setState(() {});
-                totalamount2 = totalamount2 + totalamount;
-                print('checking on click $totalamount and $totalamount2');
-              },
-            ),
+
+            Expanded(
+              child: ListView.builder(
+                itemCount: CartData.cartdatalist.length,
+                itemBuilder: (context, index) {
+                  return CartListWidget(
+                    pImage: CartData.cartdatalist[index]['productimage'],
+                    pName: CartData.cartdatalist[index]['productname'],
+                    pPrice: CartData.cartdatalist[index]['productprice'],
+                    onpressget: (totalamount) {
+                      setState(() {
+                        checking(totalamount, index);
+                      });
+                    },
+                  );
+                },
+                // Text(
+                //     CartData.cartdatalist[index]['productname'].toString()),
+              ),
+            )
+
+            // CartListWidget(
+            //   onpressget: (totalamount) {
+            //     totalamount2 = totalamount2 + totalamount;
+            //     setState(() {});
+            //     print('checking on click');
+            //   },
+            // ),
+            // CartListWidget(
+            //   onpressget: (totalamount) {
+            //     setState(() {});
+            //     totalamount2 = totalamount2 + totalamount;
+            //     print('checking on click $totalamount and $totalamount2');
+            //   },
+            // ),
           ],
         ),
       ),
@@ -112,7 +157,13 @@ class CartListWidget extends StatefulWidget {
   const CartListWidget({
     super.key,
     required this.onpressget,
+    required this.pName,
+    required this.pPrice,
+    required this.pImage,
   });
+  final String pName;
+  final String pPrice;
+  final String pImage;
 
   final ValueSetter<int> onpressget;
 
@@ -121,14 +172,13 @@ class CartListWidget extends StatefulWidget {
 }
 
 class _CartListWidgetState extends State<CartListWidget> {
-  int totalamount = 0;
-  int quantity = 1;
-
-  int productprice = 2000;
+  //int totalamount = 0;
+  int quantity = 0;
 
   @override
   Widget build(BuildContext context) {
-    print(totalamount);
+    int totalamount;
+    // print(totalamount);
     return Container(
       margin: const EdgeInsets.only(bottom: 20),
       padding: const EdgeInsets.all(10),
@@ -150,13 +200,12 @@ class _CartListWidgetState extends State<CartListWidget> {
       child: Row(
         children: [
           Container(
-            height: double.infinity,
-            width: 80,
-            decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-                image: const DecorationImage(image: AssetImage(p2))),
-          ),
+              height: double.infinity,
+              width: 80,
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                  image: DecorationImage(image: NetworkImage(widget.pImage)))),
           const SizedBox(
             width: 10,
           ),
@@ -165,12 +214,12 @@ class _CartListWidgetState extends State<CartListWidget> {
               mainAxisSize: MainAxisSize.max,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'Product Name Here',
-                  style: TextStyle(
+                Text(
+                  widget.pName.toString(),
+                  style: const TextStyle(
                       fontFamily: bold, fontSize: 16, color: primaryColor),
                 ),
-                Text('Total Rs. $productprice.'),
+                Text('Total Rs. ${widget.pPrice}.'),
                 const SizedBox(
                   height: 20,
                 ),
@@ -189,7 +238,7 @@ class _CartListWidgetState extends State<CartListWidget> {
                           onPressed: () {
                             setState(() {
                               quantity = quantity - 1;
-                              totalamount = quantity * productprice;
+                              totalamount = quantity * int.parse(widget.pPrice);
                               widget.onpressget(totalamount);
                             });
                           },
@@ -215,7 +264,7 @@ class _CartListWidgetState extends State<CartListWidget> {
                           onPressed: () {
                             setState(() {
                               quantity = quantity + 1;
-                              totalamount = quantity * productprice;
+                              totalamount = quantity * int.parse(widget.pPrice);
                               widget.onpressget(totalamount);
                             });
                           },
