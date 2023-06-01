@@ -1,15 +1,10 @@
-import 'package:ecommerce_app_assignment/utlls_app/colors.dart';
 import 'package:ecommerce_app_assignment/utlls_app/consts.dart';
 import 'package:flutter/material.dart';
 
-class CartScreen extends StatefulWidget {
-  const CartScreen({super.key});
+class CartScreen extends StatelessWidget {
+  final int? totalamount2;
+  const CartScreen({super.key, this.totalamount2});
 
-  @override
-  State<CartScreen> createState() => _CartScreenState();
-}
-
-class _CartScreenState extends State<CartScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,13 +27,17 @@ class _CartScreenState extends State<CartScreen> {
                 Text('My Cart',
                     style: const TextStyle(
                         fontSize: 24, fontFamily: bold, color: primaryColor)),
-                TextButton(
-                    onPressed: () {},
-                    child: const Text('REMOVE ALL',
-                        style: TextStyle(
-                            fontSize: 14,
-                            fontFamily: regular,
-                            color: primaryColor)))
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+                  child: TextButton(
+                      onPressed: () {},
+                      child: const Text(' Remove All',
+                          style: TextStyle(
+                              fontSize: 14,
+                              fontFamily: bold,
+                              color: secondaryLGrey))),
+                ),
               ],
             ),
             const SizedBox(
@@ -49,46 +48,75 @@ class _CartScreenState extends State<CartScreen> {
           ],
         ),
       ),
-      bottomNavigationBar: Row(
-        children: [
-          Material(
-            color: Colors.grey.withOpacity(0.2),
-            child: Container(
-                width: 150,
-                height: kToolbarHeight,
-                child: const Center(
-                    child: Text(
-                  'Rs. 20000',
-                  style: TextStyle(fontSize: 20, fontFamily: medium),
-                ))),
-          ),
-          Expanded(
-            child: Material(
-              color: secondaryBlue,
-              child: Container(
-                  //width: 150,
-                  height: kToolbarHeight,
-                  child: const Center(
-                      child: Text(
-                    'CheckOut',
-                    style: TextStyle(
-                        fontSize: 20, fontFamily: bold, color: primaryBG),
-                  ))),
+      bottomNavigationBar: Material(
+        color: Colors.grey.withOpacity(0.2),
+        child: Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Material(
+                borderRadius: BorderRadius.circular(20),
+                borderOnForeground: true,
+                color: Colors.transparent,
+                child: SizedBox(
+                    width: 150,
+                    height: kToolbarHeight,
+                    child: Center(
+                        child: Text(
+                      'Rs. $totalamount2',
+                      style: const TextStyle(fontSize: 20, fontFamily: medium),
+                    ))),
+              ),
             ),
-          )
-        ],
+            const Expanded(
+              child: Material(
+                borderRadius: BorderRadius.only(topLeft: Radius.circular(35)),
+                color: primaryColor,
+                child: SizedBox(
+                    //width: 150,
+                    height: kToolbarHeight,
+                    child: Center(
+                        child: Text(
+                      'CheckOut',
+                      style: TextStyle(
+                          fontSize: 20, fontFamily: bold, color: primaryBG),
+                    ))),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
 }
 
-class CartListWidget extends StatelessWidget {
+class CartListWidget extends StatefulWidget {
   const CartListWidget({
     super.key,
   });
 
   @override
+  State<CartListWidget> createState() => _CartListWidgetState();
+}
+
+class _CartListWidgetState extends State<CartListWidget> {
+  void sendDataToSecondWidget() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CartScreen(totalamount2: totalamount),
+      ),
+    );
+  }
+
+  int totalamount = 0;
+  int quantity = 1;
+
+  int productprice = 2000;
+
+  @override
   Widget build(BuildContext context) {
+    print(totalamount);
     return Container(
       margin: const EdgeInsets.only(bottom: 20),
       padding: const EdgeInsets.all(10),
@@ -130,7 +158,7 @@ class CartListWidget extends StatelessWidget {
                   style: TextStyle(
                       fontFamily: bold, fontSize: 16, color: primaryColor),
                 ),
-                const Text('Total Rs. 20,000'),
+                Text('Total Rs. $productprice.'),
                 const SizedBox(
                   height: 20,
                 ),
@@ -146,15 +174,21 @@ class CartListWidget extends StatelessWidget {
                           padding: EdgeInsets.zero,
                           constraints: const BoxConstraints(),
                           color: Colors.white,
-                          onPressed: () {},
+                          onPressed: () {
+                            sendDataToSecondWidget();
+                            setState(() {
+                              quantity = quantity - 1;
+                              totalamount = quantity * productprice;
+                            });
+                          },
                           icon: const Icon(Icons.remove)),
                     ),
                     const SizedBox(
                       width: 12,
                     ),
-                    const Text(
-                      '3',
-                      style: TextStyle(fontSize: 20, fontFamily: bold),
+                    Text(
+                      '$quantity',
+                      style: const TextStyle(fontSize: 20, fontFamily: regular),
                     ),
                     const SizedBox(
                       width: 12,
@@ -166,7 +200,13 @@ class CartListWidget extends StatelessWidget {
                           padding: EdgeInsets.zero,
                           constraints: const BoxConstraints(),
                           color: Colors.white,
-                          onPressed: () {},
+                          onPressed: () {
+                            sendDataToSecondWidget();
+                            setState(() {
+                              quantity = quantity + 1;
+                              totalamount = quantity * productprice;
+                            });
+                          },
                           icon: const Icon(Icons.add)),
                     )
                   ],

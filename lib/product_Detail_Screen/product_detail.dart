@@ -1,3 +1,5 @@
+// ignore_for_file: sized_box_for_whitespace, prefer_const_constructors, prefer_const_literals_to_create_immutables
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce_app_assignment/utlls_app/consts.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +15,7 @@ class ProductDetail extends StatefulWidget {
 //Center(child: Text(widget.data['productName'].toString())),
 
 class _ProductDetailState extends State<ProductDetail> {
+  bool isFav = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,8 +76,8 @@ class _ProductDetailState extends State<ProductDetail> {
                 Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Row(
-                        children: const [
+                      const Row(
+                        children: [
                           Icon(
                             Icons.star,
                             color: secondaryYellow,
@@ -100,23 +103,23 @@ class _ProductDetailState extends State<ProductDetail> {
                   color: Colors.grey.shade400,
                   thickness: 0.5,
                 ),
-                Row(
+                const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Row(
                       children: [
-                        const CircleAvatar(
+                        CircleAvatar(
                           backgroundImage: AssetImage(pp),
-                              
+
                           //backgroundColor: Colors.green,
                           radius: 30,
                         ),
-                        const SizedBox(
+                        SizedBox(
                           width: 20,
                         ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: const [
+                          children: [
                             Text(
                               'MUHAMMAD OVAIS KHAN',
                               style: TextStyle(
@@ -135,7 +138,7 @@ class _ProductDetailState extends State<ProductDetail> {
                         ),
                       ],
                     ),
-                    const Icon(Icons.arrow_forward_ios_sharp)
+                    Icon(Icons.arrow_forward_ios_sharp)
                   ],
                 ),
                 Divider(
@@ -170,84 +173,96 @@ class _ProductDetailState extends State<ProductDetail> {
         ),
         bottomNavigationBar: Row(
           children: [
-            Material(
-              color: secondaryYellow,
-              child: InkWell(
-                onTap: () {
-                  //print('called on tap');
-                },
-                child: const SizedBox(
-                  height: kToolbarHeight,
-                  width: 100,
-                  child: Center(
-                      child: Icon(
-                    Icons.favorite_rounded,
-                    shadows: [
-                      Shadow(
-                          offset: Offset(2, 2),
-                          blurRadius: 4,
-                          color: Colors.black)
-                    ],
-                    size: 30,
-                    color: Color.fromARGB(255, 245, 16, 0),
-                  )
-                      // Text(
-                      //   'Click',
-                      //   textAlign: TextAlign.center,
-                      //   style: TextStyle(
-                      //     fontWeight: FontWeight.bold,
-                      //   ),
-                      // ),
-                      ),
+            Expanded(
+              child: ClipRRect(
+                borderRadius: BorderRadius.only(topRight: Radius.circular(35)),
+                child: Material(
+                  color: primaryColor,
+                  child: InkWell(
+                    onTap: () {
+                      //print('called on tap');
+                    },
+                    child: const SizedBox(
+                      height: kToolbarHeight,
+                      width: double.infinity,
+                      child: Center(
+                          child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.shopping_cart,
+                            shadows: [
+                              Shadow(
+                                  offset: Offset(2, 2),
+                                  blurRadius: 4,
+                                  color: Colors.black)
+                            ],
+                            size: 30,
+                            color: Color.fromARGB(255, 255, 255, 255),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            'Add to Cart',
+                            style: TextStyle(
+                                fontFamily: regular,
+                                fontSize: 20,
+                                color: Color.fromARGB(255, 230, 230, 230)),
+                          )
+                        ],
+                      )
+                          // Text(
+                          //   'Bottom Button',
+                          //   style: TextStyle(
+                          //     fontWeight: FontWeight.bold,
+                          //   ),
+                          // ),
+                          ),
+                    ),
+                  ),
                 ),
               ),
             ),
-            Expanded(
-              child: Material(
-                color: secondaryBlue,
-                child: InkWell(
+
+            // ==============favorite Icon ================
+            Material(
+              color: Colors.transparent,
+              child: SizedBox(
+                height: kToolbarHeight,
+                width: 100,
+                child: Center(
+                    child: GestureDetector(
                   onTap: () {
-                    //print('called on tap');
+                    setState(() {
+                      isFav = !isFav;
+                    });
                   },
-                  child: SizedBox(
-                    height: kToolbarHeight,
-                    width: double.infinity,
-                    child: Center(
-                        child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Icon(
-                          Icons.shopping_cart,
-                          shadows: [
-                            Shadow(
-                                offset: Offset(2, 2),
-                                blurRadius: 4,
-                                color: Colors.black)
-                          ],
-                          size: 30,
-                          color: Color.fromARGB(255, 255, 255, 255),
+                  child: Container(
+                    padding: EdgeInsets.all(7),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(
+                          width: 2,
+                          color: primaryColor,
                         ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          'Add to Cart',
-                          style: TextStyle(
-                              fontFamily: regular,
-                              fontSize: 20,
-                              color: Color.fromARGB(255, 230, 230, 230)),
-                        )
-                      ],
-                    )
-                        // Text(
-                        //   'Bottom Button',
-                        //   style: TextStyle(
-                        //     fontWeight: FontWeight.bold,
-                        //   ),
-                        // ),
-                        ),
+                        color: Colors.transparent),
+                    child: Icon(
+                      isFav == true
+                          ? Icons.favorite_rounded
+                          : Icons.favorite_border_outlined,
+                      // shadows: [
+                      //   Shadow(
+                      //       offset: Offset(2, 2),
+                      //       blurRadius: 6,
+                      //       color: Colors.grey.shade200)
+                      // ],
+                      size: 30,
+
+                      color: isFav == true ? Colors.red : primaryColor,
+                    ),
                   ),
-                ),
+                )),
               ),
             ),
           ],
