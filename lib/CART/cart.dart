@@ -1,14 +1,17 @@
 import 'package:ecommerce_app_assignment/utlls_app/consts.dart';
 import 'package:flutter/material.dart';
 
-class CartScreen extends StatelessWidget {
+class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
 
-  //int totalamount2 = 0;
+  @override
+  State<CartScreen> createState() => _CartScreenState();
+}
 
+class _CartScreenState extends State<CartScreen> {
+  int totalamount2 = 0;
   @override
   Widget build(BuildContext context) {
-    int totalamount2 = 0;
     print('toal amount is $totalamount2');
     return Scaffold(
       appBar: AppBar(
@@ -48,13 +51,15 @@ class CartScreen extends StatelessWidget {
             ),
             CartListWidget(
               onpressget: (totalamount) {
-                totalamount = totalamount2;
+                totalamount2 = totalamount2 + totalamount;
+                setState(() {});
                 print('checking on click');
               },
             ),
             CartListWidget(
               onpressget: (totalamount) {
-                totalamount2 = totalamount;
+                setState(() {});
+                totalamount2 = totalamount2 + totalamount;
                 print('checking on click $totalamount and $totalamount2');
               },
             ),
