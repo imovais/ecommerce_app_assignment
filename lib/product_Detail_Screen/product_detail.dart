@@ -76,7 +76,7 @@ class _ProductDetailState extends State<ProductDetail> {
                 Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Row(
+                       Row(
                         children: [
                           Icon(
                             Icons.star,
@@ -103,7 +103,7 @@ class _ProductDetailState extends State<ProductDetail> {
                   color: Colors.grey.shade400,
                   thickness: 0.5,
                 ),
-                const Row(
+                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Row(
@@ -182,7 +182,7 @@ class _ProductDetailState extends State<ProductDetail> {
                     onTap: () {
                       //print('called on tap');
                     },
-                    child: const SizedBox(
+                    child: SizedBox(
                       height: kToolbarHeight,
                       width: double.infinity,
                       child: Center(

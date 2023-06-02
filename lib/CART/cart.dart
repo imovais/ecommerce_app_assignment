@@ -2,11 +2,14 @@ import 'package:ecommerce_app_assignment/utlls_app/consts.dart';
 import 'package:flutter/material.dart';
 
 class CartScreen extends StatelessWidget {
-  final int? totalamount2;
-  const CartScreen({super.key, this.totalamount2});
+  const CartScreen({super.key});
+
+  //int totalamount2 = 0;
 
   @override
   Widget build(BuildContext context) {
+    int totalamount2 = 0;
+    print('toal amount is $totalamount2');
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,
@@ -43,8 +46,18 @@ class CartScreen extends StatelessWidget {
             const SizedBox(
               height: 20,
             ),
-            const CartListWidget(),
-            const CartListWidget(),
+            CartListWidget(
+              onpressget: (totalamount) {
+                totalamount = totalamount2;
+                print('checking on click');
+              },
+            ),
+            CartListWidget(
+              onpressget: (totalamount) {
+                totalamount2 = totalamount;
+                print('checking on click $totalamount and $totalamount2');
+              },
+            ),
           ],
         ),
       ),
@@ -93,22 +106,16 @@ class CartScreen extends StatelessWidget {
 class CartListWidget extends StatefulWidget {
   const CartListWidget({
     super.key,
+    required this.onpressget,
   });
+
+  final ValueSetter<int> onpressget;
 
   @override
   State<CartListWidget> createState() => _CartListWidgetState();
 }
 
 class _CartListWidgetState extends State<CartListWidget> {
-  void sendDataToSecondWidget() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => CartScreen(totalamount2: totalamount),
-      ),
-    );
-  }
-
   int totalamount = 0;
   int quantity = 1;
 
@@ -175,10 +182,10 @@ class _CartListWidgetState extends State<CartListWidget> {
                           constraints: const BoxConstraints(),
                           color: Colors.white,
                           onPressed: () {
-                            sendDataToSecondWidget();
                             setState(() {
                               quantity = quantity - 1;
                               totalamount = quantity * productprice;
+                              widget.onpressget(totalamount);
                             });
                           },
                           icon: const Icon(Icons.remove)),
@@ -201,10 +208,10 @@ class _CartListWidgetState extends State<CartListWidget> {
                           constraints: const BoxConstraints(),
                           color: Colors.white,
                           onPressed: () {
-                            sendDataToSecondWidget();
                             setState(() {
                               quantity = quantity + 1;
                               totalamount = quantity * productprice;
+                              widget.onpressget(totalamount);
                             });
                           },
                           icon: const Icon(Icons.add)),
